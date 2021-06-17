@@ -18,14 +18,15 @@ import io.techieawesome.moviecatalogservice.models.Rating;
 @RestController
 @RequestMapping("/catalog")
 public class MovieCatelogResource {
-	
 	  @RequestMapping("/{userId}")
 	    public List<CatalogItem> getCatalog(@PathVariable("userId") String userId) {
+
+		  
 		  RestTemplate restTemplate = new RestTemplate();
 		  List<Rating> ratings = Arrays.asList(new Rating("13", 4),new Rating("14", 4));
 		  
-		  return ratings.stream().map(rating -> {
-			  Movie movie =  restTemplate.getForObject("http://localhost:8081/movies/"+rating.getMovieId(), Movie.class);
+		  ratings.stream().map(rating -> {
+			  Movie movie =  restTemplate.getForObject("localhost:8081/movies"+rating.getMovieId(), Movie.class);
 			  return new CatalogItem(movie.getName(), "descripting ", rating.getRating());
 		  }).collect(Collectors.toList());
 	       
