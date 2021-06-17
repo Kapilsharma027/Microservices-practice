@@ -1,6 +1,5 @@
 package io.techieawesome.moviecatalogservice.resources;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import io.techieawesome.moviecatalogservice.models.CatalogItem;
 import io.techieawesome.moviecatalogservice.models.Movie;
 import io.techieawesome.moviecatalogservice.models.Rating;
+import io.techieawesome.moviecatalogservice.models.UserRatings;
 
 
 
@@ -30,17 +30,17 @@ public class MovieCatelogResource {
 	  @RequestMapping("/{userId}")
 	    public List<CatalogItem> getCatalog(@PathVariable("userId") String userId) {
 
-		  List<Rating> ratings = Arrays.asList(new Rating("13", 4),new Rating("14", 4));
-		  
-		  return ratings.stream().map(rating -> {
-//			  Movie movie =  restTemplete.getForObject("http://localhost:8081/movies/"+rating.getMovieId(), Movie.class);
+//		  List<Rating> ratings = Arrays.asList(new Rating("13", 4),new Rating("14", 4));
+		 UserRatings ratings = restTemplete.getForObject("http://localhost:8082/ratingsdata/users/"+userId, UserRatings.class);
+		  return ratings.getUserratings().stream().map(rating -> {
+			  Movie movie =  restTemplete.getForObject("http://localhost:8081/movies/"+rating.getMovieId(), Movie.class);
 			  
-			  Movie movie =  webClientBuilder.build()
-			  .get()
-			  .uri("http://localhost:8081/movies/"+rating.getMovieId())
-			  .retrieve()
-			  .bodyToMono(Movie.class)
-			  .block();
+//			  Movie movie =  webClientBuilder.build()
+//			  .get()
+//			  .uri("http://localhost:8081/movies/"+rating.getMovieId())
+//			  .retrieve()
+//			  .bodyToMono(Movie.class)
+//			  .block();
 			
 			  return new CatalogItem(movie.getName(), "descripting ", rating.getRating());
 			  

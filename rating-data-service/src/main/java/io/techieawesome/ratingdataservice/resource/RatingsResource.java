@@ -1,10 +1,14 @@
 package io.techieawesome.ratingdataservice.resource;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.techieawesome.ratingdataservice.models.Rating;
+import io.techieawesome.ratingdataservice.models.UserRatings;
 
 @RestController
 @RequestMapping("/ratingsdata")
@@ -15,12 +19,14 @@ public class RatingsResource {
         return new Rating(movieId, 4);
     }
 
-//    @RequestMapping("/user/{userId}")
-//    public UserRating getUserRatings(@PathVariable("userId") String userId) {
-//        UserRating userRating = new UserRating();
-//        userRating.initData(userId);
-//        return userRating;
-//
-//    }
+    @RequestMapping("/users/{userId}")
+    public UserRatings getUserRatings(@PathVariable("userId") String userId) {
+    	List<Rating> ratings = Arrays.asList(new Rating("krish", 14),new Rating("krish 2", 13));
+    	 UserRatings userRatings= new UserRatings();
+    	 userRatings.setUserratings(ratings);
+    	
+    	 return userRatings;
+
+    }
 
 }
