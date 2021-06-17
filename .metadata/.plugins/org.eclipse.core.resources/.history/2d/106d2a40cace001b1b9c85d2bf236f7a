@@ -1,0 +1,5 @@
+package io.techieawesome.ratingdataservice.models;
+
+public class Rating {
+
+}

@@ -1,0 +1,5 @@
+package io.techieawesome.ratingdataservice.resource;
+
+public class RatingsResource {
+
+}
