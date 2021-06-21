@@ -1,5 +1,6 @@
 package io.techieawesome.moviecatalogservice.resources;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import io.techieawesome.moviecatalogservice.models.CatalogItem;
 import io.techieawesome.moviecatalogservice.models.Movie;
@@ -28,6 +31,7 @@ public class MovieCatelogResource {
 	private WebClient.Builder webClientBuilder;
 	
 	  @RequestMapping("/{userId}")
+	  @HystrixCommand(fallbackMethod = "getFallBackCatalog")
 	    public List<CatalogItem> getCatalog(@PathVariable("userId") String userId) {
 
 //		  List<Rating> ratings = Arrays.asList(new Rating("13", 4),new Rating("14", 4));
@@ -48,4 +52,8 @@ public class MovieCatelogResource {
 		  }).collect(Collectors.toList());
 	       
 	    }
+	  
+	  public List<CatalogItem> getFallBackCatalog(@PathVariable("userId") String userId) {
+		  return Arrays.asList(new CatalogItem("No Movie", "", 0));
+	  }
 }
